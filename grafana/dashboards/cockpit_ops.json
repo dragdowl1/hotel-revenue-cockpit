@@ -1,0 +1,381 @@
+{
+ "uid": "cockpit-ops",
+ "title": "Lisbon Lodging Cockpit, operations",
+ "tags": [
+  "cockpit"
+ ],
+ "timezone": "utc",
+ "schemaVersion": 39,
+ "version": 3,
+ "refresh": "5m",
+ "time": {
+  "from": "now-1y",
+  "to": "now"
+ },
+ "panels": [
+  {
+   "id": 100,
+   "title": "Open alerts",
+   "type": "stat",
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 6,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/alerts",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "count",
+       "text": "alerts",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    },
+    "colorMode": "background",
+    "graphMode": "none"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "red",
+        "value": 1
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 101,
+   "title": "Alert details",
+   "type": "table",
+   "gridPos": {
+    "x": 6,
+    "y": 0,
+    "w": 18,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/alerts",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "alerts",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "severity"
+      },
+      "properties": [
+       {
+        "id": "custom.cellOptions",
+        "value": {
+         "type": "color-text"
+        }
+       },
+       {
+        "id": "mappings",
+        "value": [
+         {
+          "type": "value",
+          "options": {
+           "critical": {
+            "color": "red",
+            "index": 0
+           },
+           "warning": {
+            "color": "orange",
+            "index": 1
+           },
+           "info": {
+            "color": "blue",
+            "index": 2
+           }
+          }
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 1,
+   "title": "Feed runs",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 8,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/feeds",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "runs",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 2,
+   "title": "Feed tables",
+   "type": "table",
+   "gridPos": {
+    "x": 12,
+    "y": 8,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/feeds",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "tables",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 9,
+   "title": "Scoring runs",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 16,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/jobs",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "score_runs",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 10,
+   "title": "Scheduled jobs",
+   "type": "table",
+   "gridPos": {
+    "x": 12,
+    "y": 16,
+    "w": 6,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/jobs",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "jobs",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 11,
+   "title": "dbt builds",
+   "type": "table",
+   "gridPos": {
+    "x": 18,
+    "y": 16,
+    "w": 6,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/dbt",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  }
+ ],
+ "editable": false,
+ "links": [
+  {
+   "title": "Models dashboard",
+   "type": "link",
+   "url": "/grafana/d/cockpit-models",
+   "icon": "external link",
+   "targetBlank": false
+  },
+  {
+   "title": "Cockpit",
+   "type": "link",
+   "url": "/",
+   "icon": "dashboard",
+   "targetBlank": true
+  }
+ ]
+}

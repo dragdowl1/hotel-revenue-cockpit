@@ -1,0 +1,33 @@
+version: 2
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: bookings
+        columns:
+          - name: booking_id
+            tests: [unique, not_null]
+          - name: is_canceled
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: [0, 1]
+      - name: weather_daily
+      - name: fx_daily
+      - name: holidays
+      - name: pageviews_daily
+      - name: eurostat_nights
+      - name: price_index
+      - name: feed_runs
+  - name: synthetic
+    schema: synthetic
+    tables:
+      - name: bookings
+        columns:
+          - name: booking_id
+            tests: [unique, not_null]
+          - name: is_canceled
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: [0, 1]

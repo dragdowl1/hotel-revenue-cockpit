@@ -1,0 +1,24 @@
+name: lisbon_lodging
+version: "1.0.0"
+config-version: 2
+profile: lisbon_lodging
+model-paths: ["models"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+models:
+  lisbon_lodging:
+    staging:
+      +materialized: table
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
+seeds:
+  lisbon_lodging:
+    +schema: raw
+vars:
+  # source of the bookings stream, synthetic for the generated stream on the real calendar, raw for the real 2015 to 2017 bookings
+  bookings_source: synthetic
+  # days added to booking dates so that the stream lands on the current calendar, 0 for the synthetic stream, 3654 for the real data replay
+  replay_shift_days: 0

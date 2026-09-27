@@ -1,0 +1,10 @@
+lisbon_lodging:
+  target: prod
+  outputs:
+    prod:
+      type: duckdb
+      path: "{{ env_var('DBT_DUCKDB_PATH', '../data/lodging.duckdb') }}"
+      threads: 1
+      settings:
+        memory_limit: 1GB
+        threads: 2

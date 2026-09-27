@@ -1,0 +1,55 @@
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: cockpit
+    folder: Cockpit alerts
+    interval: 10m
+    rules:
+      - uid: cockpit-data-alerts
+        title: Cockpit data and model alerts
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: cockpit
+            model:
+              refId: A
+              type: json
+              source: url
+              format: table
+              parser: backend
+              url: http://app:8000/api/monitoring/alerts
+              url_options:
+                method: GET
+                data: ""
+              root_selector: ""
+              columns:
+                - selector: count
+                  text: count
+                  type: number
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              refId: B
+              type: reduce
+              expression: A
+              reducer: last
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: B
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [0]
+        noDataState: Alerting
+        execErrState: Alerting
+        for: 20m
+        labels:
+          severity: warning
+        annotations:
+          summary: The cockpit reports one or more data or model alerts, see the operations dashboard

@@ -1,0 +1,3844 @@
+{
+ "uid": "cockpit-models",
+ "title": "Lisbon Lodging Cockpit, models",
+ "description": "Every model behind the dashboard: purpose, features, current metrics, learning curves of the last training run, feature importance, realised quality and drift of the live cancellation model. Plus the synthetic stream behind the cockpit: its events and generation runs.",
+ "tags": [
+  "cockpit"
+ ],
+ "timezone": "utc",
+ "schemaVersion": 39,
+ "version": 7,
+ "refresh": "15m",
+ "time": {
+  "from": "now-1y",
+  "to": "now"
+ },
+ "editable": false,
+ "links": [
+  {
+   "title": "Operations dashboard",
+   "type": "link",
+   "url": "/grafana/d/cockpit-ops",
+   "icon": "external link",
+   "targetBlank": false
+  },
+  {
+   "title": "Cockpit",
+   "type": "link",
+   "url": "/",
+   "icon": "dashboard",
+   "targetBlank": true
+  }
+ ],
+ "panels": [
+  {
+   "id": 1,
+   "type": "row",
+   "title": "Cancellation model",
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "id": 2,
+   "title": "Catalog, Cancellation model",
+   "description": "Purpose, features and current metrics of the model as the API reports them.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 1,
+    "w": 8,
+    "h": 19
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/catalog_metrics?model=Cancellation%20model",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "metric",
+       "text": "metric",
+       "type": "string"
+      },
+      {
+       "selector": "value",
+       "text": "value",
+       "type": "string"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": {
+     "show": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left",
+      "wrapText": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "metric"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 260
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "title": "Learning curve, log loss",
+   "description": "Loss per boosting iteration on the training rows and on the held out validation bookings of the champion's last training run.",
+   "type": "trend",
+   "gridPos": {
+    "x": 8,
+    "y": 1,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=cancellation",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_loss",
+       "text": "train_loss",
+       "type": "number"
+      },
+      {
+       "selector": "test_loss",
+       "text": "test_loss",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "binary log loss"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "title": "Learning curve, ROC AUC",
+   "description": "ROC AUC per boosting iteration on the training rows and on the held out validation bookings.",
+   "type": "trend",
+   "gridPos": {
+    "x": 16,
+    "y": 1,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=cancellation",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_metric",
+       "text": "train_metric",
+       "type": "number"
+      },
+      {
+       "selector": "test_metric",
+       "text": "test_metric",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "roc auc"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "title": "Feature importance, share of gain",
+   "description": "Gain of every feature in the champion booster divided by the total gain, sorted.",
+   "type": "bargauge",
+   "gridPos": {
+    "x": 8,
+    "y": 10,
+    "w": 16,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/importance?model=cancellation",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "feature",
+       "text": "feature",
+       "type": "string"
+      },
+      {
+       "selector": "importance",
+       "text": "importance",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "showUnfilled": true,
+    "valueMode": "color",
+    "namePlacement": "left",
+    "sizing": "auto",
+    "minVizHeight": 14,
+    "maxVizHeight": 22,
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/importance/",
+     "values": true
+    },
+    "text": {
+     "valueSize": 12,
+     "titleSize": 12
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "decimals": 3,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#2f6fdb"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#2f6fdb",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 6,
+   "title": "Realised quality, ROC AUC per 4 week window",
+   "description": "Bookings scored when created, evaluated once their arrival date passed, rolling four week arrival windows.",
+   "type": "timeseries",
+   "gridPos": {
+    "x": 0,
+    "y": 20,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/performance",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "window_end",
+       "text": "time",
+       "type": "timestamp"
+      },
+      {
+       "selector": "roc_auc",
+       "text": "roc_auc",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "legend": {
+     "showLegend": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0.5,
+     "max": 1,
+     "unit": "none",
+     "custom": {
+      "lineWidth": 2,
+      "showPoints": "always",
+      "pointSize": 5
+     },
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#2f6fdb"
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 7,
+   "title": "Realised quality, Brier against the base rate",
+   "description": "Brier score of the live predictions against the Brier score of predicting the base rate.",
+   "type": "timeseries",
+   "gridPos": {
+    "x": 12,
+    "y": 20,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/performance",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "window_end",
+       "text": "time",
+       "type": "timestamp"
+      },
+      {
+       "selector": "brier",
+       "text": "brier",
+       "type": "number"
+      },
+      {
+       "selector": "brier_base",
+       "text": "brier_base",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "unit": "none",
+     "custom": {
+      "lineWidth": 2,
+      "showPoints": "always",
+      "pointSize": 5
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "brier"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "brier_base"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#b3bcc5"
+        }
+       },
+       {
+        "id": "custom.lineStyle",
+        "value": {
+         "fill": "dash",
+         "dash": [
+          10,
+          10
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 8,
+   "title": "Feature drift, PSI against the same window last year",
+   "description": "Population stability index of the last 30 days of new bookings against the same window one year earlier. Above 0.1 warn, above 0.25 alert.",
+   "type": "bargauge",
+   "gridPos": {
+    "x": 0,
+    "y": 28,
+    "w": 12,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/drift",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "latest",
+     "columns": [
+      {
+       "selector": "feature",
+       "text": "feature",
+       "type": "string"
+      },
+      {
+       "selector": "psi",
+       "text": "psi",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "gradient",
+    "showUnfilled": true,
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/psi/",
+     "values": true
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "max": 1,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 0.1
+       },
+       {
+        "color": "red",
+        "value": 0.25
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 9,
+   "title": "Drift history, max PSI per day",
+   "description": "Largest PSI and number of flagged features per drift run.",
+   "type": "timeseries",
+   "gridPos": {
+    "x": 12,
+    "y": 28,
+    "w": 12,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/drift",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "history",
+     "columns": [
+      {
+       "selector": "day",
+       "text": "time",
+       "type": "timestamp"
+      },
+      {
+       "selector": "max_psi",
+       "text": "max_psi",
+       "type": "number"
+      },
+      {
+       "selector": "flagged",
+       "text": "flagged_features",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "custom": {
+      "lineWidth": 2
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 10,
+   "title": "Model versions",
+   "description": "Every trained version with its offline metrics and the champion flag.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 38,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/models",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "models",
+     "columns": [
+      {
+       "selector": "version",
+       "text": "version",
+       "type": "string"
+      },
+      {
+       "selector": "champion",
+       "text": "champion",
+       "type": "boolean"
+      },
+      {
+       "selector": "metrics.on_books.roc_auc",
+       "text": "on_books_auc",
+       "type": "number"
+      },
+      {
+       "selector": "metrics.on_books.brier",
+       "text": "on_books_brier",
+       "type": "number"
+      },
+      {
+       "selector": "metrics.holdout.roc_auc",
+       "text": "holdout_auc",
+       "type": "number"
+      },
+      {
+       "selector": "metrics.holdout.brier",
+       "text": "holdout_brier",
+       "type": "number"
+      },
+      {
+       "selector": "metrics.best_iteration",
+       "text": "best_iteration",
+       "type": "number"
+      },
+      {
+       "selector": "metrics.train_rows",
+       "text": "train_rows",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 11,
+   "title": "Retrain log",
+   "description": "Weekly challenger against champion on the last 60 days of arrivals.",
+   "type": "table",
+   "gridPos": {
+    "x": 12,
+    "y": 38,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/models",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "retrain_log",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 46,
+   "title": "Calibration, predicted against observed cancel rate per decile",
+   "description": "Offline deciles on the books at the snapshot from the training run, live deciles from booking time scores of arrivals in the last eight weeks. Gap is observed minus predicted.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 46,
+    "w": 12,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/calibration",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "source",
+       "text": "source",
+       "type": "string"
+      },
+      {
+       "selector": "bin",
+       "text": "decile",
+       "type": "number"
+      },
+      {
+       "selector": "rows",
+       "text": "rows",
+       "type": "number"
+      },
+      {
+       "selector": "predicted",
+       "text": "predicted",
+       "type": "number"
+      },
+      {
+       "selector": "observed",
+       "text": "observed",
+       "type": "number"
+      },
+      {
+       "selector": "gap",
+       "text": "gap",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true
+   },
+   "fieldConfig": {
+    "defaults": {
+     "decimals": 3
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "gap"
+      },
+      "properties": [
+       {
+        "id": "custom.cellOptions",
+        "value": {
+         "type": "color-background",
+         "mode": "gradient"
+        }
+       },
+       {
+        "id": "color",
+        "value": {
+         "mode": "continuous-RdYlGn"
+        }
+       },
+       {
+        "id": "min",
+        "value": -0.15
+       },
+       {
+        "id": "max",
+        "value": 0.15
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "rows"
+      },
+      "properties": [
+       {
+        "id": "decimals",
+        "value": 0
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "decile"
+      },
+      "properties": [
+       {
+        "id": "decimals",
+        "value": 0
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 47,
+   "title": "Experiments on the stream, validation and test metrics per setup",
+   "description": "Every setup of the experiments notebook: window, outlier treatment, scaling, feature selection, hyperparameter search, class weights, model families and calibration. Sorted by validation ROC AUC.",
+   "type": "table",
+   "gridPos": {
+    "x": 12,
+    "y": 46,
+    "w": 12,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/experiments",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "setup",
+       "text": "setup",
+       "type": "string"
+      },
+      {
+       "selector": "features",
+       "text": "features",
+       "type": "number"
+      },
+      {
+       "selector": "validation_auc",
+       "text": "validation_auc",
+       "type": "number"
+      },
+      {
+       "selector": "loss_gap",
+       "text": "loss_gap",
+       "type": "number"
+      },
+      {
+       "selector": "on_books_auc",
+       "text": "on_books_auc",
+       "type": "number"
+      },
+      {
+       "selector": "on_books_brier",
+       "text": "on_books_brier",
+       "type": "number"
+      },
+      {
+       "selector": "on_books_ece",
+       "text": "on_books_ece",
+       "type": "number"
+      },
+      {
+       "selector": "future_auc",
+       "text": "future_auc",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "sortBy": [
+     {
+      "displayName": "validation_auc",
+      "desc": true
+     }
+    ]
+   },
+   "fieldConfig": {
+    "defaults": {
+     "decimals": 4
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "features"
+      },
+      "properties": [
+       {
+        "id": "decimals",
+        "value": 0
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "validation_auc"
+      },
+      "properties": [
+       {
+        "id": "custom.cellOptions",
+        "value": {
+         "type": "color-background",
+         "mode": "gradient"
+        }
+       },
+       {
+        "id": "color",
+        "value": {
+         "mode": "continuous-BlPu"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 12,
+   "type": "row",
+   "title": "Demand forecast",
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 55,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "id": 13,
+   "title": "Catalog, Demand forecast",
+   "description": "Purpose, features and current metrics of the model as the API reports them.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 56,
+    "w": 8,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/catalog_metrics?model=Demand%20forecast",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "metric",
+       "text": "metric",
+       "type": "string"
+      },
+      {
+       "selector": "value",
+       "text": "value",
+       "type": "string"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": {
+     "show": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left",
+      "wrapText": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "metric"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 260
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 14,
+   "title": "Learning curve, City Hotel",
+   "description": "Per backtest origin: in sample MAPE of the chosen method over the last 52 weeks of the training window (train) against the MAPE of its 8 week forecast from that origin (test), with the seasonal naive forecast from the same origin as reference (dashed). The test line is one forecast of eight weeks, so it moves with the season: percentage errors are larger in the low season weeks and after demand shocks that the rooms on the books do not show yet.",
+   "type": "timeseries",
+   "gridPos": {
+    "x": 8,
+    "y": 56,
+    "w": 8,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=forecast_city",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "origin",
+       "text": "time",
+       "type": "timestamp"
+      },
+      {
+       "selector": "train_mape",
+       "text": "train_mape",
+       "type": "number"
+      },
+      {
+       "selector": "test_mape",
+       "text": "test_mape",
+       "type": "number"
+      },
+      {
+       "selector": "naive_test_mape",
+       "text": "naive_test_mape",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "always",
+      "pointSize": 5,
+      "axisLabel": "mape"
+     },
+     "unit": "percentunit",
+     "min": 0
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_mape"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_mape"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "naive_test_mape"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#8a8f98"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "seasonal naive, test"
+       },
+       {
+        "id": "custom.lineStyle",
+        "value": {
+         "fill": "dash",
+         "dash": [
+          6,
+          4
+         ]
+        }
+       },
+       {
+        "id": "custom.showPoints",
+        "value": "never"
+       },
+       {
+        "id": "custom.lineWidth",
+        "value": 1
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 15,
+   "title": "Learning curve, Resort Hotel",
+   "description": "Per backtest origin: in sample MAPE of the chosen method over the last 52 weeks of the training window (train) against the MAPE of its 8 week forecast from that origin (test), with the seasonal naive forecast from the same origin as reference (dashed). The test line is one forecast of eight weeks, so it moves with the season: percentage errors are larger in the low season weeks and after demand shocks that the rooms on the books do not show yet.",
+   "type": "timeseries",
+   "gridPos": {
+    "x": 16,
+    "y": 56,
+    "w": 8,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=forecast_resort",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "origin",
+       "text": "time",
+       "type": "timestamp"
+      },
+      {
+       "selector": "train_mape",
+       "text": "train_mape",
+       "type": "number"
+      },
+      {
+       "selector": "test_mape",
+       "text": "test_mape",
+       "type": "number"
+      },
+      {
+       "selector": "naive_test_mape",
+       "text": "naive_test_mape",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "always",
+      "pointSize": 5,
+      "axisLabel": "mape"
+     },
+     "unit": "percentunit",
+     "min": 0
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_mape"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_mape"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "naive_test_mape"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#8a8f98"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "seasonal naive, test"
+       },
+       {
+        "id": "custom.lineStyle",
+        "value": {
+         "fill": "dash",
+         "dash": [
+          6,
+          4
+         ]
+        }
+       },
+       {
+        "id": "custom.showPoints",
+        "value": "never"
+       },
+       {
+        "id": "custom.lineWidth",
+        "value": 1
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 16,
+   "title": "Catalog, Eurostat nowcast",
+   "description": "Purpose, features and current metrics of the model as the API reports them.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 66,
+    "w": 8,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/catalog_metrics?model=Eurostat%20nowcast",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "metric",
+       "text": "metric",
+       "type": "string"
+      },
+      {
+       "selector": "value",
+       "text": "value",
+       "type": "string"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": {
+     "show": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left",
+      "wrapText": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "metric"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 260
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 17,
+   "title": "Forecast backtest, MAPE per hotel and method",
+   "description": "Mean MAPE over the rolling backtest origins, eight weeks ahead.",
+   "type": "table",
+   "gridPos": {
+    "x": 8,
+    "y": 66,
+    "w": 16,
+    "h": 8
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/demand/forecast",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "backtest",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 18,
+   "type": "row",
+   "title": "Booking curve forecast",
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 74,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "id": 19,
+   "title": "Catalog, Booking curve forecast",
+   "description": "Purpose, features and current metrics of the model as the API reports them.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 75,
+    "w": 8,
+    "h": 12
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/catalog_metrics?model=Booking%20curve%20forecast",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "metric",
+       "text": "metric",
+       "type": "string"
+      },
+      {
+       "selector": "value",
+       "text": "value",
+       "type": "string"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": {
+     "show": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left",
+      "wrapText": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "metric"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 260
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 20,
+   "title": "Backtest error by weeks out",
+   "description": "Forecast at weekly origins over the last twelve weeks against realised rooms per stay date; MAE of the booking curve forecast, MAE of the rooms on the books taken as the forecast, and the bias (forecast minus realised).",
+   "type": "table",
+   "gridPos": {
+    "x": 8,
+    "y": 75,
+    "w": 16,
+    "h": 12
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/rm/forecast_backtest",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "by_weeks_out",
+     "columns": [
+      {
+       "selector": "hotel",
+       "text": "hotel",
+       "type": "string"
+      },
+      {
+       "selector": "weeks_out",
+       "text": "weeks_out",
+       "type": "number"
+      },
+      {
+       "selector": "stay_dates",
+       "text": "stay_dates",
+       "type": "number"
+      },
+      {
+       "selector": "mae",
+       "text": "mae",
+       "type": "number"
+      },
+      {
+       "selector": "mae_otb",
+       "text": "mae_otb",
+       "type": "number"
+      },
+      {
+       "selector": "bias",
+       "text": "bias",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 21,
+   "type": "row",
+   "title": "Channel effect",
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 87,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "id": 22,
+   "title": "Catalog, Channel effect",
+   "description": "Purpose, features and current metrics of the model as the API reports them.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 88,
+    "w": 8,
+    "h": 27
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/catalog_metrics?model=Channel%20effect",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "metric",
+       "text": "metric",
+       "type": "string"
+      },
+      {
+       "selector": "value",
+       "text": "value",
+       "type": "string"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": {
+     "show": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left",
+      "wrapText": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "metric"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 260
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 23,
+   "title": "Learning curve, log loss, propensity model",
+   "description": "Mean over the five cross fitting folds, training fold against held out fold, per boosting iteration.",
+   "type": "trend",
+   "gridPos": {
+    "x": 8,
+    "y": 88,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=channel_propensity",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_loss",
+       "text": "train_loss",
+       "type": "number"
+      },
+      {
+       "selector": "test_loss",
+       "text": "test_loss",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "binary log loss"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 24,
+   "title": "Learning curve, ROC AUC, propensity model",
+   "description": "Mean over the five cross fitting folds, training fold against held out fold, per boosting iteration.",
+   "type": "trend",
+   "gridPos": {
+    "x": 16,
+    "y": 88,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=channel_propensity",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_metric",
+       "text": "train_metric",
+       "type": "number"
+      },
+      {
+       "selector": "test_metric",
+       "text": "test_metric",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "roc auc"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 25,
+   "title": "Learning curve, log loss, outcome model, direct",
+   "description": "Mean over the five cross fitting folds, training fold against held out fold, per boosting iteration.",
+   "type": "trend",
+   "gridPos": {
+    "x": 8,
+    "y": 97,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=channel_outcome_direct",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_loss",
+       "text": "train_loss",
+       "type": "number"
+      },
+      {
+       "selector": "test_loss",
+       "text": "test_loss",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "binary log loss"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 26,
+   "title": "Learning curve, ROC AUC, outcome model, direct",
+   "description": "Mean over the five cross fitting folds, training fold against held out fold, per boosting iteration.",
+   "type": "trend",
+   "gridPos": {
+    "x": 16,
+    "y": 97,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=channel_outcome_direct",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_metric",
+       "text": "train_metric",
+       "type": "number"
+      },
+      {
+       "selector": "test_metric",
+       "text": "test_metric",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "roc auc"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 27,
+   "title": "Learning curve, log loss, outcome model, online agency",
+   "description": "Mean over the five cross fitting folds, training fold against held out fold, per boosting iteration.",
+   "type": "trend",
+   "gridPos": {
+    "x": 8,
+    "y": 106,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=channel_outcome_online_ta",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_loss",
+       "text": "train_loss",
+       "type": "number"
+      },
+      {
+       "selector": "test_loss",
+       "text": "test_loss",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "binary log loss"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 28,
+   "title": "Learning curve, ROC AUC, outcome model, online agency",
+   "description": "Mean over the five cross fitting folds, training fold against held out fold, per boosting iteration.",
+   "type": "trend",
+   "gridPos": {
+    "x": 16,
+    "y": 106,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=channel_outcome_online_ta",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_metric",
+       "text": "train_metric",
+       "type": "number"
+      },
+      {
+       "selector": "test_metric",
+       "text": "test_metric",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "roc auc"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 29,
+   "title": "Feature importance, propensity model",
+   "description": "Mean gain share over the folds, sorted.",
+   "type": "bargauge",
+   "gridPos": {
+    "x": 0,
+    "y": 115,
+    "w": 8,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/importance?model=channel_propensity",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "feature",
+       "text": "feature",
+       "type": "string"
+      },
+      {
+       "selector": "importance",
+       "text": "importance",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "showUnfilled": true,
+    "valueMode": "color",
+    "namePlacement": "left",
+    "sizing": "auto",
+    "minVizHeight": 14,
+    "maxVizHeight": 22,
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/importance/",
+     "values": true
+    },
+    "text": {
+     "valueSize": 12,
+     "titleSize": 12
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "decimals": 3,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#2f6fdb"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#2f6fdb",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 30,
+   "title": "Feature importance, outcome model, direct",
+   "description": "Mean gain share over the folds, sorted.",
+   "type": "bargauge",
+   "gridPos": {
+    "x": 8,
+    "y": 115,
+    "w": 8,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/importance?model=channel_outcome_direct",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "feature",
+       "text": "feature",
+       "type": "string"
+      },
+      {
+       "selector": "importance",
+       "text": "importance",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "showUnfilled": true,
+    "valueMode": "color",
+    "namePlacement": "left",
+    "sizing": "auto",
+    "minVizHeight": 14,
+    "maxVizHeight": 22,
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/importance/",
+     "values": true
+    },
+    "text": {
+     "valueSize": 12,
+     "titleSize": 12
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "decimals": 3,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#2f6fdb"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#2f6fdb",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 31,
+   "title": "Feature importance, outcome model, online agency",
+   "description": "Mean gain share over the folds, sorted.",
+   "type": "bargauge",
+   "gridPos": {
+    "x": 16,
+    "y": 115,
+    "w": 8,
+    "h": 10
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/importance?model=channel_outcome_online_ta",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "feature",
+       "text": "feature",
+       "type": "string"
+      },
+      {
+       "selector": "importance",
+       "text": "importance",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "showUnfilled": true,
+    "valueMode": "color",
+    "namePlacement": "left",
+    "sizing": "auto",
+    "minVizHeight": 14,
+    "maxVizHeight": 22,
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/importance/",
+     "values": true
+    },
+    "text": {
+     "valueSize": 12,
+     "titleSize": 12
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "decimals": 3,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#2f6fdb"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#2f6fdb",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 32,
+   "type": "row",
+   "title": "Price elasticity",
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 125,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "id": 33,
+   "title": "Catalog, Price elasticity",
+   "description": "Purpose, features and current metrics of the model as the API reports them.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 126,
+    "w": 8,
+    "h": 12
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/catalog_metrics?model=Price%20elasticity",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "metric",
+       "text": "metric",
+       "type": "string"
+      },
+      {
+       "selector": "value",
+       "text": "value",
+       "type": "string"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": {
+     "show": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left",
+      "wrapText": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "metric"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 260
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 34,
+   "title": "Regressor importance, absolute t statistic",
+   "description": "Absolute t statistic of every named regressor in the full pickup specification, fixed effects excluded.",
+   "type": "bargauge",
+   "gridPos": {
+    "x": 8,
+    "y": 126,
+    "w": 16,
+    "h": 12
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/importance?model=elasticity",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "feature",
+       "text": "feature",
+       "type": "string"
+      },
+      {
+       "selector": "importance",
+       "text": "importance",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "showUnfilled": true,
+    "valueMode": "color",
+    "namePlacement": "left",
+    "sizing": "auto",
+    "minVizHeight": 14,
+    "maxVizHeight": 22,
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/importance/",
+     "values": true
+    },
+    "text": {
+     "valueSize": 12,
+     "titleSize": 12
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "decimals": 3,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#2f6fdb"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#2f6fdb",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 35,
+   "type": "row",
+   "title": "Airbnb hedonic price model",
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 138,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "id": 36,
+   "title": "Catalog, Airbnb hedonic price model",
+   "description": "Purpose, features and current metrics of the model as the API reports them.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 139,
+    "w": 8,
+    "h": 18
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/catalog_metrics?model=Airbnb%20hedonic%20price%20model",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "metric",
+       "text": "metric",
+       "type": "string"
+      },
+      {
+       "selector": "value",
+       "text": "value",
+       "type": "string"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": {
+     "show": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left",
+      "wrapText": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "metric"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 260
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 37,
+   "title": "Learning curve, RMSE of log price",
+   "description": "Mean over five folds, training fold against test fold, per boosting iteration.",
+   "type": "trend",
+   "gridPos": {
+    "x": 8,
+    "y": 139,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=hedonic",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_loss",
+       "text": "train_loss",
+       "type": "number"
+      },
+      {
+       "selector": "test_loss",
+       "text": "test_loss",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "rmse"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_loss"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 38,
+   "title": "Learning curve, R2",
+   "description": "Mean over five folds, one minus the mean squared error over the variance of log price.",
+   "type": "trend",
+   "gridPos": {
+    "x": 16,
+    "y": 139,
+    "w": 8,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/curves?model=hedonic",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "iteration",
+       "text": "iteration",
+       "type": "number"
+      },
+      {
+       "selector": "train_metric",
+       "text": "train_metric",
+       "type": "number"
+      },
+      {
+       "selector": "test_metric",
+       "text": "test_metric",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "xField": "iteration",
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "none"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "drawStyle": "line",
+      "lineWidth": 2,
+      "fillOpacity": 0,
+      "showPoints": "never",
+      "axisLabel": "r2"
+     },
+     "unit": "none"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "train_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#2f6fdb"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "train"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "test_metric"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d64545"
+        }
+       },
+       {
+        "id": "displayName",
+        "value": "test"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 39,
+   "title": "Feature importance, share of gain",
+   "description": "Gain share of every feature in the final model, sorted.",
+   "type": "bargauge",
+   "gridPos": {
+    "x": 8,
+    "y": 148,
+    "w": 16,
+    "h": 9
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/importance?model=hedonic",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "feature",
+       "text": "feature",
+       "type": "string"
+      },
+      {
+       "selector": "importance",
+       "text": "importance",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "showUnfilled": true,
+    "valueMode": "color",
+    "namePlacement": "left",
+    "sizing": "auto",
+    "minVizHeight": 14,
+    "maxVizHeight": 22,
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/importance/",
+     "values": true
+    },
+    "text": {
+     "valueSize": 12,
+     "titleSize": 12
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "decimals": 3,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#2f6fdb"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#2f6fdb",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 40,
+   "type": "row",
+   "title": "Review embeddings",
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 157,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "id": 41,
+   "title": "Catalog, Review embeddings",
+   "description": "Purpose, features and current metrics of the model as the API reports them.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 158,
+    "w": 12,
+    "h": 6
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/catalog_metrics?model=Review%20embeddings",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "metric",
+       "text": "metric",
+       "type": "string"
+      },
+      {
+       "selector": "value",
+       "text": "value",
+       "type": "string"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": {
+     "show": false
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left",
+      "wrapText": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "metric"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 260
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 42,
+   "type": "row",
+   "title": "Synthetic stream",
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 164,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "id": 43,
+   "title": "Bookings per hotel and year",
+   "description": "Gross bookings, cancel rate, mean rate and bookings touched by a shock in the generated stream.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 165,
+    "w": 10,
+    "h": 12
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/synthetic",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "per_year",
+     "columns": [],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 44,
+   "title": "Events and shocks",
+   "description": "The versioned event table behind the stream: demand multipliers redistribute within the Eurostat month, flip shares cancel bookings on the books, no show shares hit arrivals on disruption days.",
+   "type": "table",
+   "gridPos": {
+    "x": 10,
+    "y": 165,
+    "w": 14,
+    "h": 12
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/events",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "",
+     "columns": [
+      {
+       "selector": "name",
+       "text": "event",
+       "type": "string"
+      },
+      {
+       "selector": "kind",
+       "text": "kind",
+       "type": "string"
+      },
+      {
+       "selector": "start_date",
+       "text": "start",
+       "type": "string"
+      },
+      {
+       "selector": "end_date",
+       "text": "end",
+       "type": "string"
+      },
+      {
+       "selector": "region",
+       "text": "region",
+       "type": "string"
+      },
+      {
+       "selector": "markets",
+       "text": "markets",
+       "type": "string"
+      },
+      {
+       "selector": "demand_multiplier",
+       "text": "demand",
+       "type": "number"
+      },
+      {
+       "selector": "cancel_flip_share",
+       "text": "flip_share",
+       "type": "number"
+      },
+      {
+       "selector": "noshow_share",
+       "text": "noshow_share",
+       "type": "number"
+      },
+      {
+       "selector": "lead_factor",
+       "text": "lead_factor",
+       "type": "number"
+      },
+      {
+       "selector": "recovery_half_life_days",
+       "text": "recovery_days",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "left"
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "start"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 100
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "end"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 100
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": 45,
+   "title": "Stream batches",
+   "description": "Every batch of the synthetic stream: the full history build and the daily batches with the booking dates they cover, the bookings emitted, the bookings kept frozen and the open outcomes flipped by the daily hazard (events, storms, no shows). A batch older than two days raises the stream stale alert.",
+   "type": "table",
+   "gridPos": {
+    "x": 0,
+    "y": 177,
+    "w": 14,
+    "h": 6
+   },
+   "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "cockpit"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "cockpit"
+     },
+     "type": "json",
+     "source": "url",
+     "format": "table",
+     "url": "http://app:8000/api/monitoring/synthetic",
+     "url_options": {
+      "method": "GET",
+      "data": ""
+     },
+     "root_selector": "runs",
+     "columns": [
+      {
+       "selector": "run_at",
+       "text": "run_at",
+       "type": "string"
+      },
+      {
+       "selector": "kind",
+       "text": "kind",
+       "type": "string"
+      },
+      {
+       "selector": "batch_from",
+       "text": "from",
+       "type": "string"
+      },
+      {
+       "selector": "batch_to",
+       "text": "to",
+       "type": "string"
+      },
+      {
+       "selector": "generated",
+       "text": "emitted",
+       "type": "number"
+      },
+      {
+       "selector": "kept",
+       "text": "kept",
+       "type": "number"
+      },
+      {
+       "selector": "flipped",
+       "text": "flipped",
+       "type": "number"
+      }
+     ],
+     "parser": "backend"
+    }
+   ],
+   "options": {
+    "cellHeight": "sm",
+    "showHeader": true
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  }
+ ]
+}

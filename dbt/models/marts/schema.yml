@@ -1,0 +1,30 @@
+version: 2
+models:
+  - name: stg_bookings
+    columns:
+      - name: booking_id
+        tests: [unique, not_null]
+      - name: arrival_date
+        tests: [not_null]
+      - name: nights
+        tests:
+          - dbt_utils_free_non_negative
+      - name: hotel
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Resort Hotel', 'City Hotel']
+  - name: mart_daily_occupancy
+    tests:
+      - unique_hotel_stay_date
+    columns:
+      - name: occupancy
+        tests: [not_null]
+  - name: mart_monthly_kpis
+    columns:
+      - name: cancel_rate
+        tests: [not_null]
+  - name: mart_agent_economics
+    columns:
+      - name: agent
+        tests: [unique, not_null]

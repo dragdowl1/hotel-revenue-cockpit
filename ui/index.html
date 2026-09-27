@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lisbon Lodging Cockpit</title>
+<meta name="description" content="Live revenue management cockpit for two Lisbon hotels on a synthetic booking stream built from real bookings and live market signals: pace, forecast, cancellation risk, demand signals, market context and rule based recommendations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/app.css?v=202609261200">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="shell">
+  <aside class="rail">
+    <div class="wordmark">Lisbon Lodging<br><em>Cockpit</em></div>
+    <div class="clock">
+      <div class="label">Stream date</div>
+      <div class="clock-date" id="clock-date">loading</div>
+      <div class="note">A synthetic booking stream on today's calendar, built from real bookings of two hotels and live market signals, scored as it arrives.</div>
+    </div>
+    <nav class="nav" aria-label="Pages">
+      <a href="#brief" data-page="brief">Morning brief</a>
+      <a href="#forecast" data-page="forecast">Pace and forecast</a>
+      <a href="#risk" data-page="risk">Cancellation risk</a>
+      <a href="#demand" data-page="demand">Demand signals</a>
+      <a href="#agents" data-page="agents">Agents and channels</a>
+      <a href="#guests" data-page="guests">Guests</a>
+      <a href="#market" data-page="market">Lisbon rental market</a>
+      <a href="#recommendations" data-page="recommendations">Recommendations</a>
+    </nav>
+    <div class="rail-foot">
+      <a href="/grafana/d/cockpit-models" target="_blank" rel="noopener">Models in Grafana</a>
+      <a href="/grafana/d/cockpit-ops" target="_blank" rel="noopener">Operations in Grafana</a>
+      <a href="/docs" target="_blank" rel="noopener">API reference</a>
+      <span id="updated"></span>
+    </div>
+  </aside>
+  <main class="main" id="main"><div id="page"></div></main>
+</div>
+<script src="/static/app.js?v=202609261200"></script>
+</body>
+</html>
