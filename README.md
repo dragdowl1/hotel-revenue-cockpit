@@ -106,4 +106,4 @@ Ports bind to `127.0.0.1` only; put a reverse proxy with TLS in front for remote
 
 ## License
 
-Code: MIT (see `LICENSE`). Data: Hotel Booking Demand and Inside Airbnb are CC BY 4.0; Eurostat, Turismo de Portugal and the other feeds under their own terms.
+Data: Hotel Booking Demand and Inside Airbnb are CC BY 4.0; Eurostat, Turismo de Portugal and the other feeds under their own terms.
