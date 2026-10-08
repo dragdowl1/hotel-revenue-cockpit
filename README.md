@@ -111,6 +111,7 @@ Code: MIT (see `LICENSE`). Data: Hotel Booking Demand and Inside Airbnb are CC B
 ## Sources
 
 **Data**
+
 •	Hotel Booking Demand dataset, Antonio, de Almeida and Nunes, 2019, Data in Brief: https://doi.org/10.1016/j.dib.2018.11.126
 •	TidyTuesday mirror of the dataset (2020-02-11): https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11
 •	Eurostat, nights spent at tourist accommodation (tour_occ_nim): https://ec.europa.eu/eurostat/databrowser/view/tour_occ_nim/default/table
@@ -125,6 +126,7 @@ Code: MIT (see `LICENSE`). Data: Hotel Booking Demand and Inside Airbnb are CC B
 •	Inside Airbnb, Lisbon data: https://insideairbnb.com/get-the-data/
 
 **Industry benchmarks used to calibrate the stream**
+
 •	HOTREC European Hotel Distribution Study 2024: https://www.hotrec.eu/media/static/files/import/all_news_2024_2024_21/hotrec-distribution-study-2024.pdf
 •	D-EDGE Hotel Distribution Report 2024: https://www.d-edge.com/hotel-distribution-report-2024-have-direct-bookings-reached-a-peak/
 •	D-EDGE, avoiding guests ghosting (no shows and prepaid cancellations): https://www.d-edge.com/avoid-guests-ghosting/
@@ -139,6 +141,7 @@ Code: MIT (see `LICENSE`). Data: Hotel Booking Demand and Inside Airbnb are CC B
 •	Peng, Song, Crouch and Witt, 2015, tourism demand elasticities: https://journals.sagepub.com/doi/10.1177/0047287514528283
 
 **Evidence behind the event rules of the stream**
+
 •	Empirica, 2023, short term rental cancellations in March 2020: https://pmc.ncbi.nlm.nih.gov/articles/PMC10134705/
 •	Net Affinity, cancellation trends: https://blog.netaffinity.com/cancellation-trends-where-do-they-stand-and-how-can-you-overcome-them
 •	Skift, 28 April 2025, Iberian blackout: https://skift.com/2025/04/28/blackouts-across-spain-and-portugal-hit-travel/
