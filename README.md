@@ -98,7 +98,7 @@ data/           duckdb file, raw, parquet, models (git-ignored)
 
 ## API
 
-`/api/health` · `/api/overview/*` · `/api/risk/*` · `/api/demand/*` · `/api/rm/*` (recommendations, forecast_backtest) · `/api/insights/*` · `/api/guests/*` · `/api/market/*` · `/api/monitoring/*` (catalog, catalog_metrics, curves, importance, calibration, drift, performance, alerts, experiments, events, synthetic, run/{job}). OpenAPI at `/docs`.
+`/api/health` · `/api/overview/*` · `/api/risk/*` · `/api/demand/*` · `/api/rm/*` (recommendations, forecast_backtest) · `/api/insights/*` · `/api/guests/*` · `/api/market/*` · `/api/monitoring/*` (catalog, catalog_metrics, curves, importance, calibration, drift, performance, alerts, experiments, events, synthetic, run/{job}). 
 
 ## Security
 
