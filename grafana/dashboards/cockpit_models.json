@@ -1,6 +1,6 @@
 {
  "uid": "cockpit-models",
- "title": "Lisbon Lodging Cockpit, models",
+ "title": "Hotel Revenue Cockpit, models",
  "description": "Every model behind the dashboard: purpose, features, current metrics, learning curves of the last training run, feature importance, realised quality and drift of the live cancellation model. Plus the synthetic stream behind the cockpit: its events and generation runs.",
  "tags": [
   "cockpit"

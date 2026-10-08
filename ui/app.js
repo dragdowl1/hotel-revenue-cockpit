@@ -1,4 +1,4 @@
-// lisbon lodging cockpit, light theme, pages rendered from the json api
+// hotel revenue cockpit, light theme, pages rendered from the json api
 
 const C = { blue: "#2f6fdb", blueLight: "#b9d0f5", red: "#d64545", redLight: "#f3c2c2", green: "#2e8b57", gray: "#b3bcc5", grayLight: "#dde3e8", text: "#1c2430", muted: "#5f6b7a", faint: "#98a2ad", rule: "#e3e7eb" };
 const hotelColor = h => h === "City Hotel" ? C.blue : cats[2];
