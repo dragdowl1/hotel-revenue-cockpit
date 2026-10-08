@@ -2,7 +2,7 @@
 
 Revenue management cockpit for a two-hotel portfolio: a synthetic booking stream on today's calendar (built from 119,390 real 2015–2017 bookings and live public signals), nightly cancellation scoring, an eight-week demand forecast, causal channel and price analyses, a rules engine with euro-valued recommendations, and model monitoring with champion–challenger retraining. Single-server, one DuckDB file, everything in Docker.
 
-**See [Live Demo](https://p1.mldlprojetcs.duckdns.org):** (Grafana at `/grafana`)
+**See Live demo [here](https://p1.mldlprojetcs.duckdns.org)** (Grafana at `/grafana`)
 
 ```
                          ┌──────────────────────────── docker compose ────────────────────────────┐
