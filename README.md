@@ -112,9 +112,9 @@ Code: MIT (see `LICENSE`). Data: Hotel Booking Demand and Inside Airbnb are CC B
 
 **Data**
 
-•	Hotel Booking Demand dataset, Antonio, de Almeida and Nunes, 2019, Data in Brief: https://doi.org/10.1016/j.dib.2018.11.126
-•	TidyTuesday mirror of the dataset (2020-02-11): https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11
-•	Eurostat, nights spent at tourist accommodation (tour_occ_nim): https://ec.europa.eu/eurostat/databrowser/view/tour_occ_nim/default/table
+* Hotel Booking Demand dataset, Antonio, de Almeida and Nunes, 2019, Data in Brief: https://doi.org/10.1016/j.dib.2018.11.126
+* TidyTuesday mirror of the dataset (2020-02-11): https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11
+* Eurostat, nights spent at tourist accommodation (tour_occ_nim): https://ec.europa.eu/eurostat/databrowser/view/tour_occ_nim/default/table
 •	Eurostat, HICP monthly index (prc_hicp_midx): https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table
 •	Turismo de Portugal, RevPAR and ADR by region and star class: https://travelbi.turismodeportugal.pt/en/accommodation/revpar-and-adr/
 •	Turismo de Portugal, occupancy rate by room and bed: https://travelbi.turismodeportugal.pt/en/accommodation/ocupancy-rate-roombed/
