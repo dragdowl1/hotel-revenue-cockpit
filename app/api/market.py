@@ -2,11 +2,12 @@ import os
 import json
 import threading
 import numpy as np
-import pandas as pd
-from fastapi import APIRouter
-from app import config
 from app import db
+import pandas as pd
+from app import config
+from typing import Annotated
 from app.api.common import records
+from fastapi import APIRouter, Query
 
 router = APIRouter(prefix="/api/market")
 search_lock = threading.Lock()
@@ -69,7 +70,7 @@ def topics():
 
 # semantic search over the embedded reviews
 @router.get("/search")
-def search(q: str = "", limit: int = 10):
+def search(q: Annotated[str, Query(max_length=200)] = "", limit: Annotated[int, Query(ge=1, le=50)] = 10):
     if q.strip() == "" or not ensure_search():
         return {"available": search_state["model"] is not None, "results": []}
     qv = search_state["model"].encode([q], normalize_embeddings=True)[0]

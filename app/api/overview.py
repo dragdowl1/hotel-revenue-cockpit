@@ -1,12 +1,13 @@
 import os
 import json
-from app import config
 import datetime
-from fastapi import APIRouter
-from app.cache import cached
 from app import db
-from app.api.common import records
+from app import config
+from app.cache import cached
 from app.replay import clock
+from typing import Annotated
+from app.api.common import records
+from fastapi import APIRouter, Query
 
 router = APIRouter(prefix="/api/overview")
 
@@ -14,7 +15,7 @@ router = APIRouter(prefix="/api/overview")
 # headline numbers as of the replay date with the same window one year earlier
 @router.get("/kpis")
 @cached
-def kpis(days: int = 30):
+def kpis(days: Annotated[int, Query(ge=1, le=3660)] = 30):
     today = clock.today()
     out = {"as_of": str(today), "window_days": days}
     for label, ref in [("current", today), ("last_year", today - datetime.timedelta(days=364))]:
@@ -38,7 +39,7 @@ def kpis(days: int = 30):
 # realised monthly kpis per hotel up to the current replay month
 @router.get("/monthly")
 @cached
-def monthly(months: int = 24):
+def monthly(months: Annotated[int, Query(ge=1, le=240)] = 24):
     today = clock.today()
     start = datetime.date(today.year, today.month, 1) - datetime.timedelta(days=31 * months)
     frame = db.query_df(
@@ -50,7 +51,7 @@ def monthly(months: int = 24):
 # realised occupancy for the past days and on the books occupancy for the coming days
 @router.get("/daily")
 @cached
-def daily(past: int = 60, future: int = 90):
+def daily(past: Annotated[int, Query(ge=1, le=3660)] = 60, future: Annotated[int, Query(ge=1, le=3660)] = 90):
     today = clock.today()
     start = today - datetime.timedelta(days=past)
     end = today + datetime.timedelta(days=future)
@@ -71,7 +72,7 @@ def daily(past: int = 60, future: int = 90):
 # booking pace, bookings created per week for the current and the previous replay year
 @router.get("/pace")
 @cached
-def pace(weeks: int = 26):
+def pace(weeks: Annotated[int, Query(ge=1, le=520)] = 26):
     today = clock.today()
     frame = db.query_df(
         "select hotel, date_trunc('week', cast(replay_booking_date as date)) as week, sum(bookings) as bookings, sum(canceled) as canceled, round(sum(booked_value), 0) as booked_value, round(avg(avg_lead_time), 1) as avg_lead_time "
@@ -91,7 +92,7 @@ def segments():
 # partner economics per booking agent
 @router.get("/agents")
 @cached
-def agents(limit: int = 30):
+def agents(limit: Annotated[int, Query(ge=1, le=500)] = 30):
     frame = db.query_df("select * from marts.mart_agent_economics where agent <> 'NULL' order by realised_revenue desc limit ?", [limit])
     return records(frame)
 

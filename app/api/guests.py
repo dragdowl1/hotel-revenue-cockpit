@@ -1,11 +1,12 @@
 import datetime
 import numpy as np
-import pandas as pd
-from fastapi import APIRouter
-from app.cache import cached
 from app import db
-from app.api.common import records
+import pandas as pd
+from app.cache import cached
 from app.replay import clock
+from typing import Annotated
+from app.api.common import records
+from fastapi import APIRouter, Query
 
 router = APIRouter(prefix="/api/guests")
 
@@ -160,7 +161,7 @@ def accounts():
 # source markets: bookings created in the last year against the year before, with cancellation, lead time and stay length per country
 @router.get("/markets")
 @cached
-def markets(top: int = 12):
+def markets(top: Annotated[int, Query(ge=1, le=200)] = 12):
     as_of = clock.today()
     start = as_of - datetime.timedelta(days=window_days)
     prior_start = start - datetime.timedelta(days=window_days)
@@ -180,7 +181,7 @@ def markets(top: int = 12):
 # booking month cohorts: how each month's bookings turned out, and how many survive each number of days after booking by channel
 @router.get("/cohorts")
 @cached
-def cohorts(months: int = 15):
+def cohorts(months: Annotated[int, Query(ge=1, le=240)] = 15):
     as_of = clock.today()
     first = (pd.Timestamp(as_of) - pd.DateOffset(months=months)).replace(day=1).date()
     frame = db.query_df(

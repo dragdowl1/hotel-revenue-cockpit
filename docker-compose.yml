@@ -1,11 +1,14 @@
-name: lisbon-lodging-cockpit
+name: hotel-revenue-cockpit
 services:
   app:
     build: .
-    image: lisbon-lodging-cockpit:latest
+    image: hotel-revenue-cockpit:latest
     restart: unless-stopped
     env_file: .env
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
     environment:
+      HOME: /tmp
+      MPLCONFIGDIR: /tmp/mpl
       HF_HOME: /srv/data/hf
       TOKENIZERS_PARALLELISM: "false"
       GRAFANA_URL: http://localhost:3000
@@ -14,12 +17,14 @@ services:
     volumes:
       - ./data:/srv/data
       - ./notebooks:/srv/notebooks
-      - ./app:/srv/app
+      - ./app:/srv/app:ro
       - ./dbt:/srv/dbt
-      - ./ui:/srv/ui
-      - ./scripts:/srv/scripts
+      - ./ui:/srv/ui:ro
+      - ./scripts:/srv/scripts:ro
     mem_limit: 4g
     cpus: 3
+    cap_drop:
+      - ALL
     security_opt:
       - no-new-privileges:true
   grafana:
@@ -42,6 +47,10 @@ services:
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
       - grafana_data:/var/lib/grafana
     mem_limit: 512m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     depends_on:
       - app
 volumes:

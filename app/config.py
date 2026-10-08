@@ -13,7 +13,7 @@ UI_DIR = os.path.join(ROOT_DIR, "ui")
 # app settings from environment
 app_name = os.environ.get("APP_NAME", "Hotel Revenue Cockpit")
 public_url = os.environ.get("PUBLIC_URL", "http://localhost:8001")
-user_agent = os.environ.get("USER_AGENT", "lisbon-lodging-cockpit/1.0")
+user_agent = os.environ.get("USER_AGENT", "hotel-revenue-cockpit/1.0")
 city_lat = float(os.environ.get("HOTEL_CITY_LAT", "38.7223"))
 city_lon = float(os.environ.get("HOTEL_CITY_LON", "-9.1393"))
 resort_lat = float(os.environ.get("HOTEL_RESORT_LAT", "37.0194"))

@@ -1,11 +1,12 @@
 import datetime
 import numpy as np
-import pandas as pd
-from fastapi import APIRouter
-from app.cache import cached
 from app import db
-from app.api.common import records
+import pandas as pd
+from app.cache import cached
 from app.replay import clock
+from typing import Annotated
+from app.api.common import records
+from fastapi import APIRouter, Query
 
 router = APIRouter(prefix="/api/insights")
 
@@ -21,7 +22,7 @@ def hazard():
 # month over month change in cancel rate of new bookings split into within segment change and mix shift
 @router.get("/mix_shift")
 @cached
-def mix_shift(months: int = 18):
+def mix_shift(months: Annotated[int, Query(ge=1, le=240)] = 18):
     today = clock.today()
     frame = db.query_df(
         "select date_trunc('month', cast(replay_booking_date as date)) as month, market_segment, count(*) as bookings, avg(is_canceled) as cancel_rate "

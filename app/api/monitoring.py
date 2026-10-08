@@ -1,4 +1,5 @@
 import os
+import secrets
 import math
 import datetime
 import numpy as np
@@ -69,10 +70,11 @@ def dbt():
     return records(frame)
 
 
-# run one scheduled job now, protected by the admin token
+# run one scheduled job now, protected by the admin token compared in constant time, refused when no token is configured
 @router.post("/run/{job_id}")
 def run_job(job_id: str, x_admin_token: str = Header(default="")):
-    if x_admin_token == "" or x_admin_token != os.environ.get("ADMIN_TOKEN", ""):
+    expected = os.environ.get("ADMIN_TOKEN", "")
+    if expected == "" or not secrets.compare_digest(x_admin_token, expected):
         raise HTTPException(status_code=403, detail="invalid token")
     jobs = {"daily_models": scheduler.job_daily_models, "feeds_daily": scheduler.job_feeds_daily, "feeds_hourly": scheduler.job_feeds_hourly, "replay_tick": scheduler.job_replay_tick, "weekly_retrain": scheduler.job_weekly_retrain, "reset_scores": scheduler.job_reset_scores, "monitoring": scheduler.job_monitoring, "export": scheduler.job_export, "load_airbnb": scheduler.job_load_airbnb, "recommendations": scheduler.job_recommendations, "refresh_notebooks": scheduler.job_refresh_notebooks, "airbnb_refresh": scheduler.job_airbnb_refresh, "airbnb_refresh_force": scheduler.job_airbnb_refresh_force, "synthetic_daily": scheduler.job_synthetic_daily, "synthetic_full": scheduler.job_synthetic_full}
     if job_id not in jobs:

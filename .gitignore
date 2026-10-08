@@ -1,0 +1,23 @@
+# data, artifacts and caches are rebuilt by scripts/bootstrap.sh
+data/*
+!data/.gitkeep
+!data/raw/
+data/raw/*
+!data/raw/.gitkeep
+!data/models/
+data/models/*
+!data/models/.gitkeep
+!data/parquet/
+data/parquet/*
+!data/parquet/.gitkeep
+.env
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+notebooks/catboost_info/
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+dbt/.user.yml
+.venv/
+.DS_Store

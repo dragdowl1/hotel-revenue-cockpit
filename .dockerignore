@@ -1,0 +1,10 @@
+data/
+.env
+.git
+__pycache__/
+*.ipynb_checkpoints
+notebooks/
+dbt/target/
+dbt/logs/
+*.zip
+*.docx
