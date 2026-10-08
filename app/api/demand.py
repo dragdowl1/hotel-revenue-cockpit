@@ -1,21 +1,22 @@
 import os
 import json
+import datetime
 import numpy as np
+from app import db
 import pandas as pd
 from app import config
-import datetime
-from fastapi import APIRouter
 from app.cache import cached
-from app import db
-from app.api.common import records
 from app.replay import clock
+from typing import Annotated
+from app.api.common import records
+from fastapi import APIRouter, Query
 
 router = APIRouter(prefix="/api/demand")
 
 
 # daily wikipedia pageviews of the lisbon article per language edition
 @router.get("/pageviews")
-def pageviews(days: int = 365):
+def pageviews(days: Annotated[int, Query(ge=1, le=3660)] = 365):
     start = datetime.date.today() - datetime.timedelta(days=days)
     frame = db.query_df("select project, date, views from raw.pageviews_daily where date >= ? order by project, date", [start])
     return records(frame)
@@ -23,7 +24,7 @@ def pageviews(days: int = 365):
 
 # weekly pageviews per language with the same week one year earlier
 @router.get("/pageviews_weekly")
-def pageviews_weekly(weeks: int = 52):
+def pageviews_weekly(weeks: Annotated[int, Query(ge=1, le=520)] = 52):
     start = datetime.date.today() - datetime.timedelta(weeks=weeks + 53)
     frame = db.query_df("select project, date_trunc('week', date) as week, sum(views) as views from raw.pageviews_daily where date >= ? group by 1, 2 order by 1, 2", [start])
     return records(frame)
@@ -31,7 +32,7 @@ def pageviews_weekly(weeks: int = 52):
 
 # weather forecast and recent archive for both hotel locations
 @router.get("/weather")
-def weather(past: int = 30):
+def weather(past: Annotated[int, Query(ge=0, le=3660)] = 30):
     start = datetime.date.today() - datetime.timedelta(days=past)
     frame = db.query_df("select location, date, temp_max, temp_min, precip_mm, wind_max, weather_code, kind from raw.weather_daily where date >= ? order by location, date, kind", [start])
     return records(frame)
@@ -39,7 +40,7 @@ def weather(past: int = 30):
 
 # upcoming public and school holidays by country
 @router.get("/holidays")
-def holidays(days: int = 90):
+def holidays(days: Annotated[int, Query(ge=1, le=3660)] = 90):
     today = datetime.date.today()
     frame = db.query_df(
         "select country, kind, min(date) as start_date, max(date) as end_date, name, count(*) as days from raw.holidays where date >= ? and date <= ? group by country, kind, name order by start_date, country",
@@ -64,7 +65,7 @@ def adr():
 
 # euro exchange rates for the main source markets
 @router.get("/fx")
-def fx(days: int = 365):
+def fx(days: Annotated[int, Query(ge=1, le=3660)] = 365):
     start = datetime.date.today() - datetime.timedelta(days=days)
     frame = db.query_df("select date, currency, rate from raw.fx_daily where date >= ? and currency in ('USD', 'GBP', 'BRL', 'CHF', 'PLN') order by currency, date", [start])
     return records(frame)
@@ -73,7 +74,7 @@ def fx(days: int = 365):
 # bookings on the books by booker country for the coming days
 @router.get("/source_markets")
 @cached
-def source_markets(days: int = 90):
+def source_markets(days: Annotated[int, Query(ge=1, le=3660)] = 90):
     today = clock.today()
     frame = db.query_df(
         "select country, count(*) as bookings, round(sum(booking_value), 0) as value_on_books, round(avg(lead_time), 1) as avg_lead_time "

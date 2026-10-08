@@ -1,4 +1,4 @@
-# Hotel Revenue Cockpit
+# Lisbon Lodging Cockpit
 
 Revenue management cockpit for a two-hotel portfolio: a synthetic booking stream on today's calendar (built from 119,390 real 2015–2017 bookings and live public signals), nightly cancellation scoring, an eight-week demand forecast, causal channel and price analyses, a rules engine with euro-valued recommendations, and model monitoring with champion–challenger retraining. Single-server, one DuckDB file, everything in Docker.
 
@@ -42,7 +42,7 @@ Revenue management cockpit for a two-hotel portfolio: a synthetic booking stream
 | Model | Method | Validation | Artifact |
 |---|---|---|---|
 | Cancellation risk | LightGBM on landmark rows, exposure + dynamic class weights, isotonic calibration (exposure-weighted), cost threshold | time-based snapshot −90 d, 120 d validation cohort, tests on-books / next 8 weeks / post-snapshot; leakage audit vs. source atoms | `data/models/cancellation_v*.joblib` + `_metrics.json` + `_curves.json` |
-| Demand forecast | per horizon LightGBM (lag 52/104, level, rooms on books, pickup ratio, calendar) vs. seasonal naive, ETS, Fourier-ARIMA, pickup | rolling backtest, 52 origins × 8 weeks, MAPE | `forecast.json` |
+| Demand forecast | weekly arrivals (arrived and not cancelled, open bookings past their arrival date included); per horizon LightGBM (lag 52/104, level, rooms on books, pickup ratio, calendar) vs. seasonal naive, ETS, Fourier-ARIMA, pickup | rolling backtest, 52 origins × 8 weeks, MAPE | `forecast.json` |
 | Channel effect | AIPW, 5-fold cross-fitted boosted nuisances, overlap trim, E-value, placebo | influence-score SE, balance SMD | `causal_channel.json` |
 | Price elasticity | within-transformed FE OLS (hotel × week × segment), cluster bootstrap, placebo; hedonic LightGBM on Airbnb | cluster-robust SE, CV RMSE/R² | `elasticity.json` |
 | Review aspects | keyword lexicons, negative share per aspect | — | `review_aspects.json` |
@@ -55,6 +55,7 @@ Requirements: Docker ≥ 24 with Compose v2, ~6 GB free disk, 4 GB RAM for the a
 
 ```bash
 cp .env.example .env          # set GF_SECURITY_ADMIN_PASSWORD and ADMIN_TOKEN
+sed -i "s/^LOCAL_UID=.*/LOCAL_UID=$(id -u)/; s/^LOCAL_GID=.*/LOCAL_GID=$(id -g)/" .env   # linux/mac: files written by the container stay yours
 docker compose up -d --build  # app on http://localhost:8001, grafana on http://localhost:3000
 ./scripts/bootstrap.sh        # first run only, see below
 ```
@@ -101,8 +102,8 @@ data/           duckdb file, raw, parquet, models (git-ignored)
 
 ## Security
 
-Ports bind to `127.0.0.1` only; put a reverse proxy with TLS in front for remote access. `POST /api/monitoring/run/*` requires `X-Admin-Token`. Grafana anonymous role is Viewer. No personal data is stored: bookings carry attributes and aggregates only, guest pages need ≥ 50 resolved bookings per rate.
+Ports bind to `127.0.0.1` only; put a reverse proxy with TLS in front for remote access. Containers drop all capabilities, run with `no-new-privileges`, mount code read-only and run as an unprivileged uid (your host uid locally). Query parameters are bounded; the admin token is compared in constant time. `POST /api/monitoring/run/*` requires `X-Admin-Token`. Grafana anonymous role is Viewer. No personal data is stored: bookings carry attributes and aggregates only, guest pages need ≥ 50 resolved bookings per rate.
 
 ## License
 
-Data: Hotel Booking Demand and Inside Airbnb are CC BY 4.0; Eurostat, Turismo de Portugal and the other feeds under their own terms.
+Code: MIT (see `LICENSE`). Data: Hotel Booking Demand and Inside Airbnb are CC BY 4.0; Eurostat, Turismo de Portugal and the other feeds under their own terms.

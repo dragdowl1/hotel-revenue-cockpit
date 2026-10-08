@@ -130,8 +130,7 @@ def daily_outcomes(world, frame, batch_from, today):
 def daily_batch():
     today = pd.Timestamp(datetime.date.today())
     existing = load_existing()
-    made = existing[existing["booking_date"] <= today]
-    batch_from = made["booking_date"].max() if len(made) else pd.Timestamp(history_start) - pd.Timedelta(days=700)
+    batch_from = last_batch_end(existing)
     if batch_from >= today:
         print("synthetic batch up to date, last booking date " + str(batch_from.date()))
         return 0
@@ -169,6 +168,15 @@ def daily_batch():
     log_batch("daily", batch_from.date(), today.date(), emitted, len(keep), flipped)
     print("synthetic batch from " + str(batch_from.date()) + " to " + str(today.date()) + ", bookings made " + str(emitted) + ", not yet made redrawn " + str(len(new) - emitted) + ", open outcomes flipped by the daily hazard " + str(flipped))
     return emitted
+
+
+# end date of the last logged batch, the last generation date of the stored bookings when no batch was logged yet
+def last_batch_end(existing):
+    if table_exists("synthetic", "batches"):
+        frame = db.query_df("select max(batch_to) as d from synthetic.batches")
+        if not pd.isna(frame["d"][0]):
+            return pd.Timestamp(frame["d"][0])
+    return pd.Timestamp(existing["generated_at"].max()).normalize()
 
 
 # the weekly refresh is the daily batch
