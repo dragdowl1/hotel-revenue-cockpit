@@ -7,15 +7,15 @@ Revenue management cockpit for a two-hotel portfolio: a synthetic booking stream
 ```
                          ┌──────────────────────────── docker compose ────────────────────────────┐
  public feeds ──HTTP──▶  │  app (FastAPI + APScheduler, 1 process, 1 DuckDB writer)               │
- open-meteo, frankfurter │   ├─ feeds/        hourly + daily pulls → raw.*                         │
- nager/openholidays      │   ├─ synthetic/    daily batch of the booking stream → synthetic.*      │
- wikimedia, eurostat     │   ├─ dbt_runner    dbt build → staging.*, marts.*  (schema tests)        │
- turismo de portugal     │   ├─ models/       score new + on-books bookings → scores.*             │
- inside airbnb           │   │               weekly retrain, PSI drift, realised quality           │
-                         │   ├─ analytics/    rm metrics, 13 recommendation rules → recs.*         │
-                         │   └─ api/          JSON + static ECharts UI          :8001 (localhost)  │
-                         │  grafana (Infinity datasource → app API)             :3000 (localhost)  │
-                         │  notebooks/  (jupyter nbconvert, weekly)  → data/models/*.json|joblib   │
+ open-meteo, frankfurter │   ├─ feeds/        hourly + daily pulls → raw.*                        │
+ nager/openholidays      │   ├─ synthetic/    daily batch of the booking stream → synthetic.*     │
+ wikimedia, eurostat     │   ├─ dbt_runner    dbt build → staging.*, marts.*  (schema tests)      │
+ turismo de portugal     │   ├─ models/       score new + on-books bookings → scores.*            │
+ inside airbnb           │   │               (weekly retrain, PSI drift, realised quality)        |
+                         │   ├─ analytics/    rm metrics, 13 recommendation rules → recs.*        │
+                         │   └─ api/          JSON + static ECharts UI          :8001 (localhost) │
+                         │  grafana (Infinity datasource → app API)             :3000 (localhost) │
+                         │  notebooks/  (jupyter nbconvert, weekly)  → data/models/*.json|joblib  │
                          └────────────────────────────────────────────────────────────────────────┘
 ```
 
