@@ -115,47 +115,47 @@ Code: MIT (see `LICENSE`). Data: Hotel Booking Demand and Inside Airbnb are CC B
 * Hotel Booking Demand dataset, Antonio, de Almeida and Nunes, 2019, Data in Brief: https://doi.org/10.1016/j.dib.2018.11.126
 * TidyTuesday mirror of the dataset (2020-02-11): https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11
 * Eurostat, nights spent at tourist accommodation (tour_occ_nim): https://ec.europa.eu/eurostat/databrowser/view/tour_occ_nim/default/table
-•	Eurostat, HICP monthly index (prc_hicp_midx): https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table
-•	Turismo de Portugal, RevPAR and ADR by region and star class: https://travelbi.turismodeportugal.pt/en/accommodation/revpar-and-adr/
-•	Turismo de Portugal, occupancy rate by room and bed: https://travelbi.turismodeportugal.pt/en/accommodation/ocupancy-rate-roombed/
-•	Open-Meteo weather API (forecast and ERA5 archive): https://open-meteo.com/
-•	Frankfurter, ECB exchange rates: https://www.frankfurter.app/
-•	Nager.Date public holidays: https://date.nager.at/
-•	OpenHolidays API, school and public holidays: https://www.openholidaysapi.org/
-•	Wikimedia pageviews API: https://wikimedia.org/api/rest_v1/
-•	Inside Airbnb, Lisbon data: https://insideairbnb.com/get-the-data/
+* Eurostat, HICP monthly index (prc_hicp_midx): https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table
+* Turismo de Portugal, RevPAR and ADR by region and star class: https://travelbi.turismodeportugal.pt/en/accommodation/revpar-and-adr/
+* Turismo de Portugal, occupancy rate by room and bed: https://travelbi.turismodeportugal.pt/en/accommodation/ocupancy-rate-roombed/
+* Open-Meteo weather API (forecast and ERA5 archive): https://open-meteo.com/
+* Frankfurter, ECB exchange rates: https://www.frankfurter.app/
+* Nager.Date public holidays: https://date.nager.at/
+* OpenHolidays API, school and public holidays: https://www.openholidaysapi.org/
+* Wikimedia pageviews API: https://wikimedia.org/api/rest_v1/
+* Inside Airbnb, Lisbon data: https://insideairbnb.com/get-the-data/
 
 **Industry benchmarks used to calibrate the stream**
 
-•	HOTREC European Hotel Distribution Study 2024: https://www.hotrec.eu/media/static/files/import/all_news_2024_2024_21/hotrec-distribution-study-2024.pdf
-•	D-EDGE Hotel Distribution Report 2024: https://www.d-edge.com/hotel-distribution-report-2024-have-direct-bookings-reached-a-peak/
-•	D-EDGE, avoiding guests ghosting (no shows and prepaid cancellations): https://www.d-edge.com/avoid-guests-ghosting/
-•	D-EDGE cancellation study via Hotel Management: https://www.hotelmanagement.net/tech/study-cancelation-rate-at-40-as-otas-push-free-change-policy
-•	Hospitality Net, preventing no shows and last minute cancellations: https://www.hospitalitynet.org/news/4124422/how-to-prevent-hotel-no-show-and-last-minute-cancellations
-•	SiteMinder Hotel Booking Trends 2025: https://www.siteminder.com/news/siteminder-hotel-booking-trends-2025/
-•	Mews, hotel booking trends: https://www.mews.com/en/blog/hotel-booking-trends
-•	HVS Lisbon Market Pulse 2025: https://www.hvs.com/article/10177-lisbon-market-pulse-2025-award-winning-city-destination
-•	AHP summer 2024 occupancy via TNews: https://tnews.pt/taxa-de-ocupacao-sobe-para-81-no-verao-de-2024-com-destaque-para-algarve-acores-e-madeira/
-•	AHETA Algarve December 2024 occupancy via Vida Imobiliaria: https://vidaimobiliaria.com/noticias/hoteis/ocupa%C3%A7%C3%A3o-por-quarto-no-algarve-cresceu-para-349-em-dezembro/
-•	IMF WP/22/24, exchange rates and tourism: https://www.imf.org/-/media/Files/Publications/WP/2022/English/wpiea2022024-print-pdf.ashx
-•	Peng, Song, Crouch and Witt, 2015, tourism demand elasticities: https://journals.sagepub.com/doi/10.1177/0047287514528283
+* HOTREC European Hotel Distribution Study 2024: https://www.hotrec.eu/media/static/files/import/all_news_2024_2024_21/hotrec-distribution-study-2024.pdf
+* D-EDGE Hotel Distribution Report 2024: https://www.d-edge.com/hotel-distribution-report-2024-have-direct-bookings-reached-a-peak/
+* D-EDGE, avoiding guests ghosting (no shows and prepaid cancellations): https://www.d-edge.com/avoid-guests-ghosting/
+* D-EDGE cancellation study via Hotel Management: https://www.hotelmanagement.net/tech/study-cancelation-rate-at-40-as-otas-push-free-change-policy
+* Hospitality Net, preventing no shows and last minute cancellations: https://www.hospitalitynet.org/news/4124422/how-to-prevent-hotel-no-show-and-last-minute-cancellations
+* SiteMinder Hotel Booking Trends 2025: https://www.siteminder.com/news/siteminder-hotel-booking-trends-2025/
+* Mews, hotel booking trends: https://www.mews.com/en/blog/hotel-booking-trends
+* HVS Lisbon Market Pulse 2025: https://www.hvs.com/article/10177-lisbon-market-pulse-2025-award-winning-city-destination
+* AHP summer 2024 occupancy via TNews: https://tnews.pt/taxa-de-ocupacao-sobe-para-81-no-verao-de-2024-com-destaque-para-algarve-acores-e-madeira/
+* AHETA Algarve December 2024 occupancy via Vida Imobiliaria: https://vidaimobiliaria.com/noticias/hoteis/ocupa%C3%A7%C3%A3o-por-quarto-no-algarve-cresceu-para-349-em-dezembro/
+* IMF WP/22/24, exchange rates and tourism: https://www.imf.org/-/media/Files/Publications/WP/2022/English/wpiea2022024-print-pdf.ashx
+* Peng, Song, Crouch and Witt, 2015, tourism demand elasticities: https://journals.sagepub.com/doi/10.1177/0047287514528283
 
 **Evidence behind the event rules of the stream**
 
-•	Empirica, 2023, short term rental cancellations in March 2020: https://pmc.ncbi.nlm.nih.gov/articles/PMC10134705/
-•	Net Affinity, cancellation trends: https://blog.netaffinity.com/cancellation-trends-where-do-they-stand-and-how-can-you-overcome-them
-•	Skift, 28 April 2025, Iberian blackout: https://skift.com/2025/04/28/blackouts-across-spain-and-portugal-hit-travel/
-•	Portugal Resident, airport strike: https://www.portugalresident.com/portugal-airport-strike-causes-major-flight-disruptions-as-hundreds-of-services-cancelled/
-•	WEF, how destinations bounce back after attacks: https://www.weforum.org/stories/2016/03/how-destinations-can-bounce-back-after-terrorist-attacks/
-•	Anguera-Torrell and Boto-Garcia, 2025: https://doi.org/10.1177/00472875241266612
-•	Rossello, Becken and Santana-Gallego, 2020: https://pmc.ncbi.nlm.nih.gov/articles/PMC7115519/
-•	OECD Tourism Trends and Policies 2022, Portugal: https://www.oecd.org/en/publications/oecd-tourism-trends-and-policies-2022_a8dd3019-en/full-report/portugal_26342d91.html
-•	INE, 2023, tourism statistics release: https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_destaques&DESTAQUESdest_boui=646074543&DESTAQUEStema=55581&DESTAQUESmodo=2
-•	Borneo Post / AFP, 2016, Portugal tourism after attacks elsewhere: https://www.theborneopost.com/2016/07/01/portugal-tourism-booms-as-terror-strikes-around-mediterranean/
-•	Krajnak, 2021, terrorism and tourism substitution: https://dx.doi.org/10.1177/1354816620938900
-•	Oeconomus, 2023, tourism during the war: https://www.oeconomus.hu/en/analyses/tourism-during-the-war-how-russian-ukrainian-and-european-tourism-changed/
-•	Otrachshenko and Nunes, 2019, wildfires and overnight stays: https://ssrn.com/abstract=3438168
-•	JRC, 2023, climate and tourism demand: https://publications.jrc.ec.europa.eu/repository/handle/JRC131508
-•	Euronews, July 2023, heatwave and travel: https://euronews.com/travel/2023/07/19/should-you-cancel-your-trip-due-to-the-heatwave-heres-how-extreme-heat-is-impacting-travel
-•	Airbnb lead times 2018 to 2022 (arXiv): https://arxiv.org/html/2501.10535v1
+* Empirica, 2023, short term rental cancellations in March 2020: https://pmc.ncbi.nlm.nih.gov/articles/PMC10134705/
+* Net Affinity, cancellation trends: https://blog.netaffinity.com/cancellation-trends-where-do-they-stand-and-how-can-you-overcome-them
+* Skift, 28 April 2025, Iberian blackout: https://skift.com/2025/04/28/blackouts-across-spain-and-portugal-hit-travel/
+* Portugal Resident, airport strike: https://www.portugalresident.com/portugal-airport-strike-causes-major-flight-disruptions-as-hundreds-of-services-cancelled/
+* WEF, how destinations bounce back after attacks: https://www.weforum.org/stories/2016/03/how-destinations-can-bounce-back-after-terrorist-attacks/
+* Anguera-Torrell and Boto-Garcia, 2025: https://doi.org/10.1177/00472875241266612
+* Rossello, Becken and Santana-Gallego, 2020: https://pmc.ncbi.nlm.nih.gov/articles/PMC7115519/
+* OECD Tourism Trends and Policies 2022, Portugal: https://www.oecd.org/en/publications/oecd-tourism-trends-and-policies-2022_a8dd3019-en/full-report/portugal_26342d91.html
+* INE, 2023, tourism statistics release: https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_destaques&DESTAQUESdest_boui=646074543&DESTAQUEStema=55581&DESTAQUESmodo=2
+* Borneo Post / AFP, 2016, Portugal tourism after attacks elsewhere: https://www.theborneopost.com/2016/07/01/portugal-tourism-booms-as-terror-strikes-around-mediterranean/
+* Krajnak, 2021, terrorism and tourism substitution: https://dx.doi.org/10.1177/1354816620938900
+* Oeconomus, 2023, tourism during the war: https://www.oeconomus.hu/en/analyses/tourism-during-the-war-how-russian-ukrainian-and-european-tourism-changed/
+* Otrachshenko and Nunes, 2019, wildfires and overnight stays: https://ssrn.com/abstract=3438168
+* JRC, 2023, climate and tourism demand: https://publications.jrc.ec.europa.eu/repository/handle/JRC131508
+* Euronews, July 2023, heatwave and travel: https://euronews.com/travel/2023/07/19/should-you-cancel-your-trip-due-to-the-heatwave-heres-how-extreme-heat-is-impacting-travel
+* Airbnb lead times 2018 to 2022 (arXiv): https://arxiv.org/html/2501.10535v1
 
